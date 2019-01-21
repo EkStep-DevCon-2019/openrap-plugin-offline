@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Sunbird</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="https://dev.sunbirded.org/assets/images/favicon.ico">
+    <link rel="stylesheet" href="bower_components/izimodal/css/iziModal.css">
+    <link rel="stylesheet" href="./assets/styles.css">
+    <link rel="stylesheet" href="./assets/inline.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+</head>
+
+<body>
+<!-- header content -->
+    <div class="ui fixed main menu bs-0 d-block">
+        <div class="ui container flex-ai-center flex-jc-space-between header-white"><a class="d-flex logo" role="banner"
+                tabindex="0" title="sunbird"><img class="cursor-pointer" alt="sunbird" src="./assets/sunbird_logo.png"></a><i
+                class="large bars icon link primary-color mobile only" tabindex="0"></i>
+            <app-main-menu class="d-flex computer only ml-auto" _nghost-c4="">
+                <div _ngcontent-c4="" class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
+                    <a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/resources" href="https://dev.sunbirded.org/resources">
+                        Library </a><a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/learn" href="https://dev.sunbirded.org/learn">
+                        Courses </a>
+                    <a _ngcontent-c4="" apptelemetryinteract="" class="item active" tabindex="0">
+                        Workspace </a>
+                </div>
+                <div _ngcontent-c4="" class="mobile only">
+                    <div _ngcontent-c4="" class="ui sidebar right vertical menu">
+                        <div _ngcontent-c4="" class="item font-weight-bold"><i _ngcontent-c4="" class="close link icon"
+                                tabindex="0" title="CLOSE"></i>
+                            <div _ngcontent-c4="" class="ellipsis"> Reviewer&nbsp;User </div>
+                        </div>
+                        <div _ngcontent-c4="" class="ui divider mt-0"></div><a _ngcontent-c4="" apptelemetryinteract=""
+                            class="item" routerlink="/resources" href="https://dev.sunbirded.org/resources">
+                            Library </a><a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/learn"
+                            href="https://dev.sunbirded.org/learn"> Courses </a><a _ngcontent-c4="" class="item"
+                            routerlink="/profile" href="https://dev.sunbirded.org/profile"> Profile </a><a
+                            _ngcontent-c4="" class="item logout-btn"> Logout </a>
+                    </div>
+                </div>
+            </app-main-menu>
+
+            <a class="profile-avtar computer only p-0 ml-15" tabindex="0">
+                <div class="ui dropdown right top pointing" id="dropdown-menu-list-header" suidropdown="" tabindex="0">
+
+                    <ngx-avatar initialssize="1" _nghost-c5="">
+                        <div _ngcontent-c5="" class="avatar-container" style="width: 38px; height: 38px;">
+
+
+                            <div _ngcontent-c5="" class="avatar-content" style="text-align: center; border-radius: 50%; border: 1px solid rgb(232, 232, 232); text-transform: uppercase; color: rgb(170, 170, 170); background-color: transparent; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 17px; line-height: 38px; font-family: inherit; height: 38px; width: 38px;">R</div>
+                        </div>
+                    </ngx-avatar>
+                    <div class="menu transition hidden" suidropdownmenu="">
+
+                        <div class="item headerDropdownProfile"> Reviewer&nbsp;User </div>
+                        <div class="ui divider"></div><a class="item" routerlink="profile" href="https://dev.sunbirded.org/profile">
+                            Profile </a>
+
+
+
+                        <a class="item"> Logout </a>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="bg-primary p-10">
+            <div class="ui container d-flex flex-ai-center mx-0"><button apptelemetryinteract="" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0"
+                    title="Enter QR code"><i class="qrcode d-flex flex-ai-center fas fa-qrcode mr-050"></i><span>Enter
+                        QR code</span></button><span class="computer only mx-10 search-qrcode-divider">|</span>
+
+                <app-search class="searchbox ml-0 mr-auto my-0" _nghost-c6="">
+                    <div _ngcontent-c6="" class="ui fluid ui left action input searchbox-inner" id="search-input-container"><input
+                            _ngcontent-c6="" class="searchinput br-0 ng-untouched ng-pristine " id="keyword" name="filter_search"
+                            type="text" title="Search in All" placeholder="Search in All"><button _ngcontent-c6=""
+                            class="ui icon button "><i class="search fas fa-search blue br-0" tabindex="0" title="Search in All"></i>
+                        </button></div>
+                </app-search>
+
+
+            </div>
+        </div>
+
+        <div class="p-10 mobile only">
+            <div class="ui mobile-view container d-flex flex-jc-space-between mx-0"><button apptelemetryinteract=""
+                    class="ui button qr-code-btn d-flex flex-ai-center"><i class="qrcode icon d-flex flex-ai-center"></i><span
+                        class="d-flex flex-ai-center"> Enter QR code </span></button>
+
+            </div>
+        </div>
+    </div>
+<!-- header content -->
+
+    <!-- mid content -->
+    <div class="ui container">
+        <div class="ui stackable grid mt-30">
+            <div class="three wide column pt-0">
+                <h4 class="workspaceicon ui header sectionHeading mt-20"><i class="fas fa-database"></i><span>
+                        My Workspace </span></h4>
+                <div class="publicmenusection ui secondary vertical menu tabs">
+                    <a class="item" href="#tab-create">
+                        Create </a>
+                    <a class="item" href="#tab-allcontent">
+                        All My Content </a>
+                    <a class="item" href="#tab-review">
+                        Review Submissions </a>
+                    <a class="item" href="#tab-published">
+                        Published </a>
+                    <a class="item" href="#tab-upreview">
+                        Up For Review </a>
+                </div>
+            </div>
+            <div class="nine wide column workspacesegment">
+                <div id="ContentEditorModal"></div>
+                <div class="ui grid mt-5 tab_content tab-create" id="tab-create">
+                    <div class="three wide column">
+                        <div class="ui link card workspacecontent" tabindex="0">
+                            <div class="content">
+                                <div class="textcontent"><i class="fas fa-file-alt "></i><span class="my-text"><a href="#" class="trigger" onclick="$('#ContentEditorModal').iziModal('open')">Resources</a></span></div>
+                            </div>
+                        </div>
+                        <p class="workspaceinstuction">Create different resources like story, game, activity, audio,
+                            video, using the inbuilt authoring tools.</p>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui link card workspacecontent" tabindex="0">
+                            <div class="content">
+                                <div class="textcontent"><i class="fas fa-upload"></i><span class="my-text"><a href="#" class="trigger" onclick="$('#ContentEditorModal').iziModal('open')">Upload Content</a></span></div>
+                            </div>
+                        </div>
+                        <p class="workspaceinstuction">You can upload content here.</p>
+                    </div>
+                </div>
+
+                <div class="ui grid mt-5 tab_content tab-allcontent" id="tab-allcontent">
+                    <div class="twelve wide column">All My Content</div>
+                </div>
+
+                <div class="ui grid mt-5 tab_content tab-review" id="tab-review">
+                    <div class="twelve wide column">Review Submissions</div>
+                </div>
+
+                <div class="ui grid mt-5 tab_content tab-published" id="tab-published">
+                    <div class="twelve wide column">Published</div>
+                </div>
+
+                <div class="ui grid mt-5 tab_content tab-upreview" id="tab-upreview">
+                    <div class="twelve wide column">Up For Review</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- mid content -->
+
+    <!-- footer -->
+    <footer class="footer mt-20">
+        <div class="ui container">
+            <div class="ui grid stackable">
+                <div class="four wide column footerMenu">
+                    <ul class="p-0 m-0">
+                        <li class="mb-15"><a href="https://dev.sunbirded.org/verticals/profile-registry/">
+                                DIKSHA Verticals </a></li>
+                        <li class="mb-15"><a href="https://dev.sunbirded.org/help/getting-started/explore-diksha/index.html">
+                                Help Center </a></li>
+                        <li class="mb-15"><a href="https://dev.sunbirded.org/partners/"> Partners </a></li>
+                    </ul>
+                </div>
+                <div class="four wide column center aligned playStore"><label class="d-block mb-10">DIKSHA for Mobile</label><a
+                        class="d-block" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app"><img
+                            class="playStore-img" src="./assets/google_playstore.png" alt="DIKSHA for Mobile"></a></div>
+                <div class="four wide column contantDetails"><label class="d-block mb-10"> Contact for queries:
+                    </label><a class="d-block mb-30" href="mailto:diksha-support@ncte-India.org">
+                        diksha-support@ncte-india.org </a><label class="d-block"><a href="https://dev.sunbirded.org/term-of-use.html">
+                            Terms of Use </a><span>| © 2019, DIKSHA</span></label></div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer -->
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/izimodal/js/iziModal.js" type="text/javascript"></script>
+    <script type="text/javascript">
+         var context = {
+        user: {
+            id: '390',
+            name: "Santhosh"
+        },
+        sid: "rctrs9r0748iidtuhh79ust993",
+        contentId: "",
+        channel: "ntp.sunbird"
+    }
+    var defaultConfig = {
+        baseURL: '',
+        plugins: [
+            { "id": "org.ekstep.ceheader", "ver": "1.0", "type": "plugin" }
+        ]
+    }
+
+   $("#ContentEditorModal").iziModal({
+      title: '',
+      iframe: true,
+      iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
+      navigateArrows: false,
+      fullscreen: true,
+      openFullscreen: true,
+      closeOnEscape: false,
+      overlayClose: false,
+      overlay: false,
+      overlayColor: '',
+      history: false,
+      onClosing: () => {
+        this._zone.run(() => {
+          this.closeModal();
+        });
+      }
+    });
+
+        $(document).ready(function ($) {
+            $('.tab_content').hide();
+            $('.tab_content:first').show();
+            $('.tabs a:first').addClass('active');
+
+            $('.tabs a').click(function (event) {
+
+                $('.tabs a').removeClass('active');
+                $(this).addClass('active');
+                $('.tab_content').hide();
+
+                var selectTab = $(this).attr("href");
+                $(selectTab).fadeIn();
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
