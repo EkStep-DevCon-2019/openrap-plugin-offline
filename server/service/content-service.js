@@ -161,6 +161,8 @@ exports.searchContent = function(req, res, next) {
             resp.result.content = [];
             contents.forEach(function(content) {
                 var data = JSON.parse(content.metadata);
+                data.status = content.status;
+                data.updateddate = content.updateddate;
                 data.stageIcons = undefined;
                 data.body = undefined;
                 resp.result.content.push(data);
