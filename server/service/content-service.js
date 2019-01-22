@@ -1,4 +1,6 @@
 var fs = require('fs');
+var _ = require('lodash');
+
 var ExpressCassandra = require('express-cassandra');
 var models = ExpressCassandra.createClient({
     clientOptions: {
@@ -103,7 +105,7 @@ exports.uploadContent = function(req, res) {
 
 exports.readContent = function(req, res, next) {
     // createdby: {'$in': ["1", "2", "3"]}, status: {'$in': ["Draft"]}, 
-    ContentModel.findOne({ identifier: req.params.contentId }, {raw:true, allow_filtering: true}, function(err, content) {
+    ContentModel.findOne({ identifier: req.params.contentId }, { raw: true, allow_filtering: true }, function(err, content) {
         if (err) {
             console.log(err);
             next(err);
@@ -119,8 +121,74 @@ exports.readContent = function(req, res, next) {
     });
 }
 
-exports.searchContent = function(req, res) {
+exports.searchContent = function(req, res, next) {
 
+    var query = {};
+    if (req.body.request.filters.status) {
+        query.status = { "$in": req.body.request.filters.status }
+    }
+    if (req.body.request.filters.createdBy) {
+        if (_.isArray(req.body.request.filters.createdBy)) {
+            query.createdby = { "$in": req.body.request.filters.createdBy }
+        } else {
+            query.createdby = req.body.request.filters.createdBy
+        }
+    }
+
+    ContentModel.find(query, { raw: true, allow_filtering: true }, function(err, contents) {
+        if (err) {
+            console.log(err);
+            next(err);
+        } else {
+            var resp = JSON.parse(JSON.stringify(response));
+            resp.result.totalCount = contents.length;
+            resp.result.content = [];
+            contents.forEach(function(content) {
+                var data = JSON.parse(content.metadata);
+                data.versionKey = "1495172265314";
+                resp.result.content.push(data);
+            })
+            res.json(resp);
+        }
+    });
+}
+
+function updateStatus(req, res, next, newStatus) {
+    ContentModel.findOne({ identifier: req.params.contentId }, { raw: true, allow_filtering: true }, function(err, content) {
+        if (err) {
+            console.log(err);
+            next(err);
+        } else {
+            var cloneContent = JSON.parse(JSON.stringify(content));
+            cloneContent.status = newStatus;
+            var contentToBeUpdated = new ContentModel(cloneContent);
+            contentToBeUpdated.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    next(err);
+                } else {
+                    ContentModel.delete({createdby: content.createdby, status: content.status, identifier: content.identifier}, function(err){
+                        if (err) {
+                            console.log(err);
+                            next(err);
+                        } else {
+                            var resp = JSON.parse(JSON.stringify(response));
+                            resp.result.versionKey = "1495172265314";
+                            res.json(resp);
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+exports.sendForReview = function(req, res, next) {
+    updateStatus(req, res, next, "Review");
+}
+
+exports.publish = function(req, res, next) {
+    updateStatus(req, res, next, "Live");
 }
 
 exports.createItem = function(req, res) {

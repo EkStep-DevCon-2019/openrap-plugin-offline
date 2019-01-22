@@ -11,7 +11,8 @@
   "dependencies": {
     "express": "^4.16.4",
     "request": "^2.88.0",
-    "express-cassandra": "*"
+    "express-cassandra": "*",
+    "lodash": "*"
   },
   "devDependencies": {
     "express-http-proxy": "^1.5.1",

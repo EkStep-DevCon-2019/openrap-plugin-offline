@@ -10,13 +10,8 @@ module.exports = function(app, dirname) {
 	app.post('/action/assessment/v3/items/create', contentService.createItem);
 	app.post('/action/assessment/v3/items/update/:itemId', contentService.updateItem);
 	app.post('/action/assessment/v3/items/read/:itemId', contentService.readItem);
+
+	app.post('/action/content/v3/review/:contentId', contentService.sendForReview);
+	app.post('/action/content/v3/publish/:contentId', contentService.publish);
+	
 };
-
-
-
-
-
-
-
-
-
