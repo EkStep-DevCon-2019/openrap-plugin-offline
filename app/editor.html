@@ -10,6 +10,7 @@
     <script src="./libs/jquery.min.js"></script>
     <script src="./libs/bootstrap.min.js"></script>
     <link rel="stylesheet" href="bower_components/izimodal/css/iziModal.css">
+    <script src="bower_components/moment/moment.js"></script>
     <link rel="stylesheet" href="./styles/semantic.min.css">
     <script src="./libs/semantic.min.js"></script>
     <script src="./libs/angular.min.js"></script>
@@ -353,6 +354,10 @@
                 crossDomain: true,
                 success: function (data) {
                     $scope.data = data.result.content;
+                    $scope.data.forEach(function(content, index) {
+                       if($scope.data[index].lastUpdatedOn)
+                            $scope.data[index].lastUpdatedOn = moment($scope.data[index].lastUpdatedOn).fromNow();
+                    });
                 },
                 error: function (request, status, error) {
                     alert(error);
