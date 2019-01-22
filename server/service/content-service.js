@@ -31,6 +31,18 @@ var ContentModel = models.loadSchema('content_index', {
     key: ["createdby", "status", "identifier"]
 });
 
+var AssetModel = models.loadSchema('asset_index', {
+    fields: {
+        identifier: "text",
+        mediatype: "text",
+        location: "text",
+        metadata: "text",
+        createdby: "text",
+        createddate: "timestamp"
+    },
+    key: ["createdby", "mediatype", "identifier"]
+});
+
 var QuestionBank = models.loadSchema('question_bank', {
     fields: {
         identifier: "text",
@@ -59,9 +71,8 @@ var response = {
 
 exports.createContent = function(req, res, next) {
 
+    var identifier = "do_" + new Date().getTime();
     if (req.body && req.body.mimeType === 'application/vnd.ekstep.ecml-archive') {
-
-        var identifier = "do_" + new Date().getTime();
         var metadata = {
             identifier: identifier,
             objectType: "Content",
@@ -88,6 +99,27 @@ exports.createContent = function(req, res, next) {
                 next(err);
             } else {
                 res.json(metadata);
+            }
+        });
+    } else {
+        var metadata = req.body.request.content;
+        metadata.identifier = identifier;
+        metadata.node_id = identifier;
+        var asset = new AssetModel({
+            identifier: identifier,
+            mediatype: metadata.mediaType,
+            metadata: JSON.stringify(metadata),
+            createdby: metadata.createdBy,
+            createddate: Date.now()
+        });
+        asset.save(function(err) {
+            if (err) {
+                console.log(err);
+                next(err);
+            } else {
+                var resp = JSON.parse(JSON.stringify(response));
+                resp.result.node_id = identifier;
+                res.json(resp);
             }
         });
     }
@@ -119,8 +151,34 @@ exports.updateContent = function(req, res, next) {
     });
 }
 
-exports.uploadContent = function(req, res) {
+exports.uploadContent = function(req, res, next) {
+    
+    AssetModel.findOne({ identifier: req.params.contentId }, { raw: true, allow_filtering: true }, function(err, asset) {
+        if (err) {
+            console.log(err);
+            next(err);
+        } else {
+            var metadata = JSON.parse(asset.metadata);
+            metadata.node_id = metadata.identifier;
+            metadata.content_url = "/" + req.file.path;
+            metadata.downloadUrl = "/" + req.file.path;
+            asset.metadata = JSON.stringify(metadata);
+            asset.location = "/" + req.file.path;
 
+            var assetToBeUpdated = new AssetModel(asset);
+            assetToBeUpdated.save(function(err){
+                if(err) {
+                    console.log(err);
+                    next(err);
+                }
+                else {
+                    var resp = JSON.parse(JSON.stringify(response));
+                    resp.result = metadata;
+                    res.json(resp);
+                }
+            });
+        }
+    });
 }
 
 exports.readContent = function(req, res, next) {
@@ -140,36 +198,69 @@ exports.readContent = function(req, res, next) {
 exports.searchContent = function(req, res, next) {
 
     var query = {};
-    if (req.body.request.filters.status) {
-        query.status = { "$in": req.body.request.filters.status }
-    }
-    if (req.body.request.filters.createdBy) {
-        if (_.isArray(req.body.request.filters.createdBy)) {
-            query.createdby = { "$in": req.body.request.filters.createdBy }
-        } else {
-            query.createdby = req.body.request.filters.createdBy
+    
+    if(req.body.request.filters.mediaType) {
+        if (req.body.request.filters.createdBy) {
+            if (_.isArray(req.body.request.filters.createdBy)) {
+                query.createdby = { "$in": req.body.request.filters.createdBy }
+            } else {
+                query.createdby = req.body.request.filters.createdBy
+            }
         }
-    }
-
-    ContentModel.find(query, { raw: true, allow_filtering: true }, function(err, contents) {
-        if (err) {
-            console.log(err);
-            next(err);
-        } else {
-            var resp = JSON.parse(JSON.stringify(response));
-            resp.result.totalCount = contents.length;
-            resp.result.content = [];
-            contents.forEach(function(content) {
-                var data = JSON.parse(content.metadata);
-                data.status = content.status;
-                data.updateddate = content.updateddate;
-                data.stageIcons = undefined;
-                data.body = undefined;
-                resp.result.content.push(data);
-            })
-            res.json(resp);
+        if (req.body.request.filters.mediaType) {
+            if (_.isArray(req.body.request.filters.mediaType)) {
+                query.mediatype = { "$in": req.body.request.filters.mediaType }
+            } else {
+                query.mediatype = req.body.request.filters.mediaType
+            }
         }
-    });
+        AssetModel.find(query, { raw: true, allow_filtering: true }, function(err, assets) {
+            if (err) {
+                console.log(err);
+                next(err);
+            } else {
+                var resp = JSON.parse(JSON.stringify(response));
+                resp.result.totalCount = assets.length;
+                resp.result.content = [];
+                assets.forEach(function(asset) {
+                    var data = JSON.parse(asset.metadata);
+                    resp.result.content.push(data);
+                })
+                res.json(resp);
+            }
+        });
+    } else {
+        if (req.body.request.filters.status) {
+            query.status = { "$in": req.body.request.filters.status }
+        }
+        if (req.body.request.filters.createdBy) {
+            if (_.isArray(req.body.request.filters.createdBy)) {
+                query.createdby = { "$in": req.body.request.filters.createdBy }
+            } else {
+                query.createdby = req.body.request.filters.createdBy
+            }
+        }
+        ContentModel.find(query, { raw: true, allow_filtering: true }, function(err, contents) {
+            if (err) {
+                console.log(err);
+                next(err);
+            } else {
+                var resp = JSON.parse(JSON.stringify(response));
+                resp.result.totalCount = contents.length;
+                resp.result.content = [];
+                contents.forEach(function(content) {
+                    var data = JSON.parse(content.metadata);
+                    data.status = content.status;
+                    data.updateddate = content.updateddate;
+                    data.stageIcons = undefined;
+                    data.body = undefined;
+                    resp.result.content.push(data);
+                })
+                res.json(resp);
+            }
+        });
+    }
+    
 }
 
 function updateStatus(req, res, next, newStatus) {
