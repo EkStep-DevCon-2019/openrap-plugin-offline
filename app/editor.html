@@ -291,6 +291,7 @@
         }
         var defaultConfig = {
             baseURL: '',
+            modalId: 'ContentEditorModal',
             plugins: [
                 { "id": "org.ekstep.sunbirdcommonheader", "ver": "1.3", "type": "plugin" }
             ]
@@ -356,8 +357,8 @@
                 success: function (data) {
                     $scope.data = data.result.content;
                     $scope.data.forEach(function(content, index) {
-                       if($scope.data[index].lastUpdatedOn)
-                            $scope.data[index].lastUpdatedOn = moment($scope.data[index].lastUpdatedOn).fromNow();
+                       if($scope.data[index].updateddate)
+                            $scope.data[index].updateddate = moment($scope.data[index].updateddate).fromNow();
                     });
                 },
                 error: function (request, status, error) {
