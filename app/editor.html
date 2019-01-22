@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     <link rel="stylesheet" href="./styles/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <script src="./libs/jquery.min.js"></script>
     <script src="./libs/bootstrap.min.js"></script>
     <link rel="stylesheet" href="bower_components/izimodal/css/iziModal.css">
@@ -133,7 +134,7 @@
                                 </tr>
                             </thead>
                             <tbody in-view-container="">
-                                <tr apptelemetryinteract="" ng-repeat="content in data" class="UpForReviewListHover cursor-pointer" in-view-item="">
+                                <tr apptelemetryinteract="" ng-repeat="content in data" class="UpForReviewListHover cursor-pointer" in-view-item=""  ng-click="initiazeEditor(content.identifier)">
                                     <td>
                                         <h5 class="ui image header"><img class="ui tiny image UpReviewTinyImage" src="https://dev-sunbird-temp.azureedge.net/player/assets/images/default.png">
                                             <div class="content ">
@@ -147,7 +148,7 @@
                                     <td>
                                         <h5 class="ui image header">
                                             <div class="content">
-                                                <div class="UpReviewSubHeader">{{content.lastUpdatedOn}} </div>
+                                                <div class="UpReviewSubHeader">{{content.updateddate}} </div>
                                             </div>
                                         </h5>
                                     </td>
@@ -312,28 +313,28 @@
             });
         }
 
-        function initiazeEditor(contentId) {
+        function initiazeEditor(contentId){
             context.contentId = contentId;
-            $("#ContentEditorModal").iziModal({
-                title: '',
-                iframe: true,
-                iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
-                navigateArrows: false,
-                fullscreen: true,
-                openFullscreen: true,
-                closeOnEscape: false,
-                overlayClose: false,
-                overlay: false,
-                overlayColor: '',
-                history: false,
-                onClosing: () => {
-                    this._zone.run(() => {
-                        this.closeModal();
-                    });
-                }
-            });
-        }
-
+                $("#ContentEditorModal").iziModal({
+                    title: '',
+                    iframe: true,
+                    iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
+                    navigateArrows: false,
+                    fullscreen: true,
+                    openFullscreen: true,
+                    closeOnEscape: false,
+                    overlayClose: false,
+                    overlay: false,
+                    overlayColor: '',
+                    history: false,
+                    onClosing: () => {
+                        this._zone.run(() => {
+                            this.closeModal();
+                        });
+                    }
+                });
+            }
+    
         var app = angular.module('workspaceApp', []);
         app.controller('workspaceCtrl', function ($scope) {
             var requestObj = {
@@ -358,6 +359,28 @@
                     alert(error);
                 }
             });
+            $scope.initiazeEditor = function(contentId) {
+                context.contentId = contentId;
+                $("#ContentEditorModal").iziModal({
+                    title: '',
+                    iframe: true,
+                    iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
+                    navigateArrows: false,
+                    fullscreen: true,
+                    openFullscreen: true,
+                    closeOnEscape: false,
+                    overlayClose: false,
+                    overlay: false,
+                    overlayColor: '',
+                    history: false,
+                    onClosing: () => {
+                        this._zone.run(() => {
+                            this.closeModal();
+                        });
+                    }
+                });
+                $('#ContentEditorModal').iziModal('open');
+            }
             $scope.tab = 'tab-create';
             $scope.setTab = function (newTab) {
                 $scope.tab = newTab;
