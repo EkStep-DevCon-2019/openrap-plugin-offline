@@ -1,6 +1,6 @@
 {
     "id": "org.ekstep.wordinfobrowser",
-    "ver": "1.1",
+    "ver": "1.0",
     "shortId": "wordinfobrowser",
     "author": "Kartheek Palla",
     "title": "Add Word Info Popup",
@@ -14,6 +14,9 @@
         },
         "dependencies": [
             {"type": "css", "src": "editor/plugin.css"}
+        ],
+        "views":[
+            {"template":"./wordinfobrowser.html", "controller":"./wordinfobrowserapp.js"}
         ],
         "configManifest": [{
             "propertyName": "color",
