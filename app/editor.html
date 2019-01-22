@@ -24,12 +24,6 @@
             <i class="large bars icon link primary-color mobile only" tabindex="0"></i>
             <app-main-menu class="d-flex computer only ml-auto" _nghost-c4="">
                 <div _ngcontent-c4="" class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
-                    <a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/resources" href="https://dev.sunbirded.org/resources">
-                        Library </a><a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/learn"
-                        href="https://dev.sunbirded.org/learn">
-                        Courses </a>
-                    <a _ngcontent-c4="" apptelemetryinteract="" class="item active" tabindex="0">
-                        Workspace </a>
                 </div>
                 <div _ngcontent-c4="" class="mobile only">
                     <div _ngcontent-c4="" class="ui sidebar right vertical menu">
@@ -69,17 +63,7 @@
         </div>
 
         <div class="bg-primary p-10">
-            <div class="ui container d-flex flex-ai-center mx-0"><button apptelemetryinteract="" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" title="Enter QR code"><i class="qrcode d-flex flex-ai-center fas fa-qrcode mr-050"></i><span>Enter
-                        QR code</span></button><span class="computer only mx-10 search-qrcode-divider">|</span>
-
-                <app-search class="searchbox ml-0 mr-auto my-0" _nghost-c6="">
-                    <div _ngcontent-c6="" class="ui fluid ui left action input searchbox-inner" id="search-input-container"><input _ngcontent-c6="" class="searchinput br-0 ng-untouched ng-pristine " id="keyword" name="filter_search"
-                            type="text" title="Search in All" placeholder="Search in All"><button _ngcontent-c6="" class="ui icon button "><i class="search fas fa-search blue br-0" tabindex="0" title="Search in All"></i>
-                        </button></div>
-                </app-search>
-
-
-            </div>
+            <div class="ui container d-flex flex-ai-center mx-0"></div>
         </div>
 
         <div class="p-10 mobile only">
@@ -106,7 +90,7 @@
                         Review Submissions </a>
                     <a class="item" href="#tab-published">
                         Published </a>
-                    <a class="item" href="#tab-upreview">
+                    <a class="item" href="#tab-upreview" id="upForReview" style="display: none">
                         Up For Review </a>
                 </div>
             </div>
@@ -191,6 +175,7 @@
                                     <input type="hidden" name="framework" value="devcon-appu" />
                                     <input type="hidden" name="board" value="devcon-appu_board" />
                                     <input type="hidden" name="medium" value="English" />
+                                    <input type="hidden" name="mimeType" value="application/vnd.ekstep.ecml-archive" />
                                 </div>
                             </app-content-creation-default-template>
                         </div>
@@ -231,13 +216,29 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/izimodal/js/iziModal.js" type="text/javascript"></script>
     <script type="text/javascript">
+
+        var userNames = {"1": "Suren", "2": "Mohit", "3": "Kamesh"};
+        function getURLParam(param) {
+            var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < url.length; i++) {
+                var urlparam = url[i].split('=');
+                if (urlparam[0] == param) {
+                    return urlparam[1];
+                }
+            }
+        }
+        var userId = getURLParam('userId');
+        var userName = userNames[userId];
+        if(userId === '3') {
+            $('#upForReview').show();
+        }
         var context = {
             user: {
-                id: '390',
-                name: "Santhosh"
+                id: userId,
+                name: userName
             },
             sid: "rctrs9r0748iidtuhh79ust993",
-            contentId: "do_112535971284877312170",
+            contentId: "",
             channel: "ntp.sunbird"
         }
         var defaultConfig = {
@@ -248,15 +249,15 @@
         }
         function submitForm() {
             var formData = $("#createForm").serializeArray();
-            console.log("form", formData);
-
+            formData.push({name: "userId", value: userId})
             $.ajax({
                 type: 'POST',
-                url: '',
+                url: '/action/content/v3/create',
                 data: formData,
-                dataType: "application/json",
+                dataType: "json",
                 crossDomain: true,
                 success: function (msg) {
+                    initiazeEditor(msg.identifier);
                     $('#ContentEditorModal').iziModal('open');
                 },
                 error: function (request, status, error) {
@@ -264,24 +265,28 @@
                 }
             });
         }
-        $("#ContentEditorModal").iziModal({
-            title: '',
-            iframe: true,
-            iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
-            navigateArrows: false,
-            fullscreen: true,
-            openFullscreen: true,
-            closeOnEscape: false,
-            overlayClose: false,
-            overlay: false,
-            overlayColor: '',
-            history: false,
-            onClosing: () => {
-                this._zone.run(() => {
-                    this.closeModal();
-                });
-            }
-        });
+
+        function initiazeEditor(contentId) {
+            context.contentId = contentId;
+            $("#ContentEditorModal").iziModal({
+                title: '',
+                iframe: true,
+                iframeURL: "bower_components/content-editor-iframe/index.html?context=" + JSON.stringify(context) + "&config=" + JSON.stringify(defaultConfig),
+                navigateArrows: false,
+                fullscreen: true,
+                openFullscreen: true,
+                closeOnEscape: false,
+                overlayClose: false,
+                overlay: false,
+                overlayColor: '',
+                history: false,
+                onClosing: () => {
+                    this._zone.run(() => {
+                        this.closeModal();
+                    });
+                }
+            });
+        }
 
         $(document).ready(function ($) {
             $('.tab_content').hide();

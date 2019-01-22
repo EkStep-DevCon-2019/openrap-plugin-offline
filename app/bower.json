@@ -4,8 +4,8 @@
     "dependencies": {
         "jquery": "~3.2.1",
         "izimodal": "~1.5.0",
-        "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.0.0.zip",
-        "generic-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.0.0.zip",
+        "content-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/content-editor-iframe-1.13.0.zip",
+        "generic-editor-iframe": "https://s3.ap-south-1.amazonaws.com/ekstep-public-dev/artefacts/editor/generic-editor-iframe-1.13.0.zip",
         "font-awesome": "~4.5.0"
     },
     "appPath": "app",

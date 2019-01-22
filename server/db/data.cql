@@ -2,22 +2,23 @@ CREATE KEYSPACE IF NOT EXISTS openrap_db WITH replication = {'class': 'SimpleStr
 
 CREATE TABLE IF NOT EXISTS openrap_db.content_index (
 	identifier text,
-	objectType text,
+	objecttype text,
 	status text,
 	metadata text,
-	stage_icons blob,
+	stageicons blob,
 	data blob,
-	createdDate timestamp,
-	updatedDate timestamp,
-	PRIMARY KEY (identifier, status)
+	createdby text,
+	createddate timestamp,
+	updateddate timestamp,
+	PRIMARY KEY (createdby, status, identifier)
 );
 
 CREATE TABLE IF NOT EXISTS openrap_db.question_bank (
 	identifier text,
-	objectType text,
+	objecttype text,
 	metadata text,
 	data blob,
-	createdDate timestamp,
-	updatedDate timestamp,
+	createddate timestamp,
+	updateddate timestamp,
 	PRIMARY KEY (identifier)
 );
