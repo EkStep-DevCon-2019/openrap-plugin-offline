@@ -16,6 +16,5 @@
     "express-http-proxy": "^1.5.1",
     "follow-redirects": "^1.6.1",
     "lodash": "^4.17.11"
-  },
-  "dependencies": {}
+  }
 }
