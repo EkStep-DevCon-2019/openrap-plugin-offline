@@ -3,7 +3,7 @@ var contentService = require('../service/content-service');
 module.exports = function(app, dirname) {
 	
 	app.post('/action/content/v3/create', contentService.createContent);
-	app.post('/action/content/v3/update/:contentId', contentService.updateContent);
+	app.patch('/action/content/v3/update/:contentId', contentService.updateContent);
 	app.post('/action/content/v3/upload/:contentId', contentService.uploadContent);
 	app.get('/action/content/v3/read/:contentId', contentService.readContent);
 	app.post('/action/content/v3/search', contentService.searchContent);

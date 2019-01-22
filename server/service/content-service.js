@@ -24,8 +24,6 @@ var ContentModel = models.loadSchema('content_index', {
         objecttype: "text",
         status: "text",
         metadata: "text",
-        stageicons: "blob",
-        data: "blob",
         createdby: "text",
         createddate: "timestamp",
         updateddate: "timestamp"
@@ -38,7 +36,6 @@ var QuestionBank = models.loadSchema('question_bank', {
         identifier: "text",
         objecttype: "text",
         metadata: "text",
-        data: "blob",
         createddate: "timestamp",
         updateddate: "timestamp"
     },
@@ -73,7 +70,8 @@ exports.createContent = function(req, res, next) {
             contentType: 'Resource',
             mimeType: req.body.mimeType,
             medium: req.body.medium,
-            createdby: req.body.userId
+            createdby: req.body.userId,
+            versionKey: "1495172265314"
         }
         var content = new ContentModel({
             identifier: identifier,
@@ -96,7 +94,29 @@ exports.createContent = function(req, res, next) {
 }
 
 exports.updateContent = function(req, res, next) {
-
+    ContentModel.findOne({ identifier: req.params.contentId }, { raw: true, allow_filtering: true }, function(err, content) {
+        if (err) {
+            console.log(err);
+            next(err);
+        } else {
+            var metadata = JSON.parse(content.metadata);
+            var newMetadata = _.assign(metadata, req.body.request.content);
+            content.metadata = JSON.stringify(newMetadata);
+            content.updateddate = Date.now();
+            var contentToBeUpdated = new ContentModel(content);
+            contentToBeUpdated.save(function(err){
+                if(err) {
+                    console.log(err);
+                    next(err);
+                }
+                else {
+                    var resp = JSON.parse(JSON.stringify(response));
+                    resp.result.versionKey = "1495172265314";
+                    res.json(resp);
+                }
+            });
+        }
+    });
 }
 
 exports.uploadContent = function(req, res) {
@@ -110,12 +130,8 @@ exports.readContent = function(req, res, next) {
             console.log(err);
             next(err);
         } else {
-            var data = JSON.parse(content.metadata);
-            data.body = content.body;
-            data.stageIcons = content.stageicons;
-            data.versionKey = "1495172265314";
             var resp = JSON.parse(JSON.stringify(response));
-            resp.result.content = data;
+            resp.result.content = JSON.parse(content.metadata);
             res.json(resp);
         }
     });
@@ -145,7 +161,8 @@ exports.searchContent = function(req, res, next) {
             resp.result.content = [];
             contents.forEach(function(content) {
                 var data = JSON.parse(content.metadata);
-                data.versionKey = "1495172265314";
+                data.stageIcons = undefined;
+                data.body = undefined;
                 resp.result.content.push(data);
             })
             res.json(resp);
