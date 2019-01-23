@@ -366,7 +366,26 @@
             plugins: [
                 { "id": "org.ekstep.sunbirdcommonheader", "ver": "1.3", "type": "plugin" },
                 { "id": "org.ekstep.preview", "ver": "1.2", "type": "plugin" }
-            ]
+            ],
+            previewConfig:{
+              "plugins": [
+                {
+                  "id": "org.sunbird.player.endpage",
+                  "ver": 1.1,
+                  "type": "plugin"
+                }
+              ],
+              "splash": {
+                "text": "",
+                "icon": "",
+                "bgImage": "assets/icons/splacebackground_1.png",
+                "webLink": ""
+              },
+              "overlay": {
+                "showUser": false
+              },
+              "showEndPage": false
+            }
         }
         function submitForm() {
             var formData = $("#createForm").serializeArray();
