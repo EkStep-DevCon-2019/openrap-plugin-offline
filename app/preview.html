@@ -1,128 +1,253 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
+
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Player</title>
   <link rel="stylesheet" type="text/css" href="./assets/bookshelf_slider.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+  <link rel="stylesheet" href="./styles/bootstrap.min.css">
+  <script src="./libs/jquery.min.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <link rel="stylesheet" href="./styles/semantic.min.css">
+  <script src="./libs/semantic.min.js"></script>
+  <script src="./libs/angular.min.js"></script>
+  <link rel="stylesheet" href="./assets/styles.css">
+  <link rel="stylesheet" href="./assets/inline.css">
+
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
   <style type="text/css">
-  html,body {
-    height:100%;
-  }
-  body {
-    margin:0px;
-    padding:0px;
-  }
-    .swiper-background {
-        background-image: url("./assets/background_1.png");
-        background-size: cover;
-    }
     .swiper-slide {
-        background-position: center;
-        background-size: cover;
-        width: 120px;
-        /*height: 140px;*/
-        padding: 15px 15px 15px 15px;
-        border-radius: 10%;
-        background-color: white;
-        margin-left: 15px;
-        margin-bottom: 15px;
-        position: relative;
+      background-position: center;
+      background-size: cover;
+      width: 120px;
+      /*height: 140px;*/
+      padding: 15px 15px 15px 15px;
+      border-radius: 10%;
+      background-color: #e8e6e6;
+      margin-left: 15px;
+      margin-bottom: 15px;
+      position: relative;
     }
+
     .product_name {
-      padding:0px;margin:0px 0px 10px 0px;font-weight: bold;
+      padding: 0px;
+      margin: 0px 0px 10px 0px;
+      font-weight: bold;
     }
+
     .product img {
-        display: block;
-        cursor: pointer;
+      display: block;
+      cursor: pointer;
     }
-    .text-center{
-      text-align:center;
+
+    .text-center {
+      text-align: center;
     }
+
     .white {
-      color:#fff;
+      color: #fff;
     }
+
     img {
-        -webkit-user-drag: none;
+      -webkit-user-drag: none;
     }
+
     .pane {
-        overflow: auto;
-        display: flex;
-     max-height: calc(100vh - 80px);
-     min-height: 200px; 
-    align-items: flex-start;
-    justify-content: center;
-    flex-wrap: wrap;
+      overflow: auto;
+      display: flex;
+      max-height: calc(100vh - 80px);
+      min-height: 200px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
     }
+
     .content-app-icon {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        background: white;
-        margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background: white;
+      margin: 0 auto;
     }
+
     .gc-contentlist-play-icon {
       position: absolute;
       top: 40%;
       left: 30%
     }
-    .contentPreview{
-      display: none;
-    }
-    #previewContentIframe {
-      border:0px;margin:0px;padding: 0px;
-    }
-    .close {
-  position: absolute;
-  right: 32px;
-  top: 32px;
-  width: 32px;
-  height: 32px;
-  opacity: 0.3;
-  z-index: 9999;
-}
-.close:hover {
-  opacity: 1;
-}
-.close:before, .close:after {
-  position: absolute;
-  left: 15px;
-  content: ' ';
-  height: 33px;
-  width: 2px;
-  background-color: #333;
-}
-.close:before {
-  transform: rotate(45deg);
-}
-.close:after {
-  transform: rotate(-45deg);
-}
 
+    .contentPreview {
+      display: none;
+      height: 350px;
+      width: 562px;
+      margin-left: 28%;
+      margin: auto;
+      width: 50%;
+      border: 3px solid #196d7f;
+      padding: 10px;
+    }
+
+
+
+    #previewContentIframe {
+      border: 0px;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .close {
+      position: absolute;
+      right: 32px;
+      top: 32px;
+      width: 32px;
+      height: 32px;
+      opacity: 0.3;
+      z-index: 9999;
+    }
+
+    .close:hover {
+      opacity: 1;
+    }
+
+    .close:before,
+    .close:after {
+      position: absolute;
+      left: 15px;
+      content: ' ';
+      height: 33px;
+      width: 2px;
+      background-color: #333;
+    }
+
+    .close:before {
+      transform: rotate(45deg);
+    }
+
+    .close:after {
+      transform: rotate(-45deg);
+    }
+
+    #contentList {
+      height: 350px;
+      width: 562px;
+      margin-left: 28%;
+      margin: auto;
+      width: 50%;
+      padding: 10px;
+    }
   </style>
+
 </head>
-<body class="swiper-background">
-   <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl">
-  <h1 class="text-center white">Player</h1>
+
+<body>
+  <!-- header content -->
+  <div class="ui fixed main menu bs-0 d-block">
+    <div class="ui container flex-ai-center flex-jc-space-between header-white"><a class="d-flex logo" role="banner" tabindex="0" title="sunbird"><img class="cursor-pointer" alt="sunbird" src="./assets/sunbird_logo.png"></a>
+      <i class="large bars icon link primary-color mobile only" tabindex="0"></i>
+      <app-main-menu class="d-flex computer only ml-auto" _nghost-c4="">
+        <div _ngcontent-c4="" class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
+        </div>
+        <div _ngcontent-c4="" class="mobile only">
+          <div _ngcontent-c4="" class="ui sidebar right vertical menu">
+            <div _ngcontent-c4="" class="item font-weight-bold"><i _ngcontent-c4="" class="close link icon" tabindex="0" title="CLOSE"></i>
+              <div _ngcontent-c4="" class="ellipsis"> Reviewer&nbsp;User </div>
+            </div>
+            <div _ngcontent-c4="" class="ui divider mt-0"></div><a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/resources" href="https://dev.sunbirded.org/resources">
+                            Library </a><a _ngcontent-c4="" apptelemetryinteract="" class="item" routerlink="/learn" href="https://dev.sunbirded.org/learn"> Courses </a>
+            <a _ngcontent-c4="" class="item" routerlink="/profile" href="https://dev.sunbirded.org/profile">
+                            Profile </a><a _ngcontent-c4="" class="item logout-btn"> Logout </a>
+          </div>
+        </div>
+      </app-main-menu>
+
+      <a class="profile-avtar computer only p-0 ml-15" tabindex="0">
+        <div class="ui dropdown right top pointing" id="dropdown-menu-list-header" suidropdown="" tabindex="0">
+
+          <ngx-avatar initialssize="1" _nghost-c5="">
+            <div _ngcontent-c5="" class="avatar-container" style="width: 38px; height: 38px;">
+
+
+              <div _ngcontent-c5="" class="avatar-content" style="text-align: center; border-radius: 50%; border: 1px solid rgb(232, 232, 232); text-transform: uppercase; color: rgb(170, 170, 170); background-color: transparent; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 17px; line-height: 38px; font-family: inherit; height: 38px; width: 38px;">R</div>
+            </div>
+          </ngx-avatar>
+          <div class="menu transition hidden" suidropdownmenu="">
+
+            <div class="item headerDropdownProfile"> Reviewer&nbsp;User </div>
+            <div class="ui divider"></div><a class="item" routerlink="profile" href="https://dev.sunbirded.org/profile">
+                            Profile </a>
+
+
+
+            <a class="item"> Logout </a>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="bg-primary p-10">
+      <div class="ui container d-flex flex-ai-center mx-0"></div>
+    </div>
+
+    <div class="p-10 mobile only">
+      <div class="ui mobile-view container d-flex flex-jc-space-between mx-0"><button apptelemetryinteract="" class="ui button qr-code-btn d-flex flex-ai-center"><i class="qrcode icon d-flex flex-ai-center"></i><span
+                        class="d-flex flex-ai-center"> Enter QR code </span></button>
+
+      </div>
+    </div>
+  </div>
+  <!-- header content -->
+
+  <!-- mid content -->
+  <div class="ui stackable grid mt-30">
+    <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl">
+      <h1 class="text-center">Player</h1>
       <div class="pane" width=100% height=100%>
 
         <div class="product swiper-slide" ng-repeat="story in stories" ng-click="playContent(story.identifier);">
-            <p class="product_name ng-binding">{{story.name}}</p>
-            <div class="gc-contentlist-innerdiv">
-                  <img class="content-app-icon" src="./assets/default.png">
-                  <img class="gc-contentlist-play-icon" src="./assets/icn_play_grey.png">
-            </div>
+          <p class="product_name ng-binding">{{story.name}}</p>
+          <div class="gc-contentlist-innerdiv">
+            <img class="content-app-icon" src="./assets/default.png">
+            <img class="gc-contentlist-play-icon" src="./assets/icn_play_grey.png">
           </div>
+        </div>
       </div>
     </div>
-<div class="contentPreview" style="height:100%;" id="contentPreview">
- <a href class="close" ng-click="closePlayer()"></a>
-   <iframe id="previewContentIframe" width=100% height='100%'></iframe>
-</div>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/angular/angular.min.js"></script>
-<script type="text/javascript">
-  var app = angular.module('previwApp', []);
-  app.controller('previwCtrl', function ($scope) {
-    var requestObj = {
+    <div class="contentPreview" id="contentPreview">
+      <a href class="close" ng-click="closePlayer()"></a>
+      <iframe id="previewContentIframe" width=100% height='100%'></iframe>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="footer mt-20">
+    <div class="ui container">
+      <div class="ui grid stackable">
+        <div class="four wide column footerMenu">
+          <ul class="p-0 m-0">
+            <li class="mb-15"><a href="https://dev.sunbirded.org/verticals/profile-registry/">
+                                DIKSHA Verticals </a></li>
+            <li class="mb-15"><a href="https://dev.sunbirded.org/help/getting-started/explore-diksha/index.html">
+                                Help Center </a></li>
+            <li class="mb-15"><a href="https://dev.sunbirded.org/partners/"> Partners </a></li>
+          </ul>
+        </div>
+        <div class="four wide column center aligned playStore"><label class="d-block mb-10">DIKSHA for Mobile</label><a class="d-block" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app"><img
+                            class="playStore-img" src="./assets/google_playstore.png" alt="DIKSHA for Mobile"></a></div>
+        <div class="four wide column contantDetails"><label class="d-block mb-10"> Contact for queries:
+                    </label><a class="d-block mb-30" href="mailto:diksha-support@ncte-India.org">
+                        diksha-support@ncte-india.org </a><label class="d-block"><a href="https://dev.sunbirded.org/term-of-use.html">
+                            Terms of Use </a><span>| © 2019, DIKSHA</span></label></div>
+      </div>
+    </div>
+  </footer>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript">
+    var app = angular.module('previwApp', []);
+    app.controller('previwCtrl', function ($scope) {
+      var requestObj = {
         "request": {
           "filters": {
             "status": ["Draft", "Live", "Review"]
@@ -130,59 +255,60 @@
         }
       };
       $.ajax({
-          type: 'POST',
-          url: '/action/content/v3/search',
-          dataType: "json",
-          data: JSON.stringify(requestObj),
-          contentType: "application/json; charset=utf-8",
-          crossDomain: true,
-          success: function (data) {
-            $scope.stories = data.result.content;
-              $scope.$apply();
-          },
-          error: function (request, status, error) {
-              alert(error);
-          }
+        type: 'POST',
+        url: '/action/content/v3/search',
+        dataType: "json",
+        data: JSON.stringify(requestObj),
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        success: function (data) {
+          $scope.stories = data.result.content;
+          $scope.$apply();
+        },
+        error: function (request, status, error) {
+          alert(error);
+        }
       });
 
-      $scope.closePlayer = function(){
-          $('#contentPreview').hide();
-          $('#contentList').show();
+      $scope.closePlayer = function () {
+        $('#contentPreview').hide();
+        $('#contentList').show();
       }
 
-      $scope.playContent = function(contentId){
+      $scope.playContent = function (contentId) {
         $.ajax({
-              type: 'GET',
-              url: '/action/content/v3/read/'+contentId+'?mode=edit&fields=body',
-              crossDomain: true,
-              success: function (data) {
-                console.log('data ', data);
-                configuration = {};
-                configuration.config = {
-                    "repos": "/content-plugins",
-                    "showEndpage": true
-                };
-                configuration.context = {
-                  sid: "rctrs9r0748iidtuhh79ust993",
-                    uid: "2"
-                };
-                configuration.data = data.result.content.body;
-                configuration.metadata = data.result.content;
-                var previewContentIframe = $('#previewContentIframe')[0];
-                previewContentIframe.src = '/app/preview/preview.html?webview=true';
-                previewContentIframe.onload = function() {
-                  $('#contentPreview').show();
-                  $('#contentList').hide();
-                  console.log('configuration ', configuration);
-                    previewContentIframe.contentWindow.initializePreview(configuration);
-                }
-              },
-              error: function (request, status, error) {
-                  alert(error);
-              }
-          });
+          type: 'GET',
+          url: '/action/content/v3/read/' + contentId + '?mode=edit&fields=body',
+          crossDomain: true,
+          success: function (data) {
+            console.log('data ', data);
+            configuration = {};
+            configuration.config = {
+              "repos": "/content-plugins",
+              "showEndpage": true
+            };
+            configuration.context = {
+              sid: "rctrs9r0748iidtuhh79ust993",
+              uid: "2"
+            };
+            configuration.data = data.result.content.body;
+            configuration.metadata = data.result.content;
+            var previewContentIframe = $('#previewContentIframe')[0];
+            previewContentIframe.src = '/app/preview/preview.html?webview=true';
+            previewContentIframe.onload = function () {
+              $('#contentPreview').show();
+              $('#contentList').hide();
+              console.log('configuration ', configuration);
+              previewContentIframe.contentWindow.initializePreview(configuration);
+            }
+          },
+          error: function (request, status, error) {
+            alert(error);
+          }
+        });
       }
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>

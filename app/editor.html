@@ -499,12 +499,12 @@
                 $scope.isSet = function (tabNum) {
                     return $scope.tab === tabNum;
                 };
-                $scope.publishContent = function(identifier){
+                $scope.publishContent = function (identifier) {
                     $.ajax({
                         type: 'POST',
                         url: '/action/content/v3/publish/' + identifier,
                         dataType: "json",
-                        data: {"request": {"content": {}}},
+                        data: { "request": { "content": {} } },
                         contentType: "application/json; charset=utf-8",
                         crossDomain: true,
                         success: function (data) {
