@@ -158,7 +158,6 @@
                                         </h5>
                                     </td>
                                     <td class="UpForReviewStatusOrange">{{content.status}}</td>
-                                    <td><i class="trash large icon"></i></td>
                                     <td>
                                         <!---->
                                     </td>
@@ -170,7 +169,7 @@
 
                 <div ng-hide="isSet('tab-create') || isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column">
-                        <div class="ui stackable three column grid">
+                        <div class="ui stackable three column grid" ng-if="data.totalCount">
                             <div class="column py-5 pl-10" ng-repeat="content in data">
                                 <div class="ui fluid card">
                                     <div class="image" style="height:200px">
@@ -180,6 +179,13 @@
                                         <a class="header">{{content.name}}</a>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="ten wide column" ng-if="!data.totalCount">
+                            <div class="ui two column centered grid no-result-container">
+                                <div class="column"><img src="./images/erroricon.png">
+                                    <div class="no-result-text">{{noResultMsg}}</div>
+                                <div class="no-result-search-text">no-results</div>
                             </div>
                         </div>
                     </div>
@@ -343,6 +349,7 @@
 
         var app = angular.module('workspaceApp', []);
         app.controller('workspaceCtrl', function ($scope) {
+            $scope.noResultMsg = '';
             $scope.search = function(requestObj){
                 $scope.data = undefined;
                 $.ajax({
@@ -399,21 +406,25 @@
                     case "tab-create":
                         break;
                     case "tab-allcontent":
+                        $scope.noResultMsg = "No content to display. Start Creating Now";
                         requestObj.request.filters.createdBy = userId;
                         requestObj.request.filters.status = ["Draft"]
                         $scope.search(requestObj);
                         break;
                     case "tab-review":
+                        $scope.noResultMsg = "You don't have any content for review...";
                         requestObj.request.filters.createdBy = userId;
                         requestObj.request.filters.status = ["Review"]
                         $scope.search(requestObj);
                         break;
                     case "tab-published":
+                        $scope.noResultMsg = "You don't have any published content...";
                         requestObj.request.filters.createdBy = userId;
                         requestObj.request.filters.status = ["Live"]
                         $scope.search(requestObj);
                         break;
                     case "tab-upreview":
+                        $scope.noResultMsg = "You don't have any content for review...";
                         delete requestObj.request.filters.createdBy;
                         requestObj.request.filters.status = ["Review"]
                         $scope.search(requestObj);
