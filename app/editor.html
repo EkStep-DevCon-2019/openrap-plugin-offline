@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <div ng-show="isSet('tab-allcontent') || isSet('tab-upreview')" class="ui grid mt-5 tab_content tab-allcontent">
+                <div ng-show="isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column" ng-if="data.length">
                         <table class="ui upForReviewTable table">
                             <thead>
@@ -158,6 +158,59 @@
                                         </h5>
                                     </td>
                                     <td class="UpForReviewStatusOrange">{{content.status}}</td>
+
+                                    <td>
+                                        <!---->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ten wide column" ng-if="!data.length">
+                            <div class="ui two column centered grid no-result-container">
+                                <div class="column">
+                                    <img src="./images/erroricon.png">
+                                    <div class="no-result-text">{{noResultMsg}}</div>
+                                    <div class="no-result-search-text">no-results</div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <div ng-show="isSet('tab-upreview')" class="ui grid mt-5 tab_content tab-allcontent">
+                    <div class="twelve wide column" ng-if="data.length">
+                        <table class="ui upForReviewTable table">
+                            <thead>
+                                <tr>
+                                    <th class="six wide UpReviewTableHeader">Content </th>
+                                    <th class="four wide UpReviewTableHeader">Last Updated </th>
+                                    <th class="two wide UpReviewTableHeader">Status </th>
+                                    <th class="two wide UpReviewTableHeader"></th>
+                                    <th class="two wide UpReviewTableHeader"></th>
+                                </tr>
+                            </thead>
+                            <tbody in-view-container="">
+                                <tr apptelemetryinteract="" ng-repeat="content in data" class="UpForReviewListHover cursor-pointer" in-view-item="">
+                                    <td>
+                                        <h5 class="ui image header"><img class="ui tiny image UpReviewTinyImage" src="./images/default.png">
+                                            <div class="content ">
+                                                <div class="UpReviewHeader">{{content.name}}
+                                                    <!---->
+                                                </div>
+                                                <div class="UpReviewSubHeader">{{content.contentType}} </div>
+                                            </div>
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        <h5 class="ui image header">
+                                            <div class="content">
+                                                <div class="UpReviewSubHeader">{{content.updateddate}} </div>
+                                            </div>
+                                        </h5>
+                                    </td>
+                                    <td class="UpForReviewStatusOrange">{{content.status}}</td>
+                                    <td ng-click="publishContent(content.identifier)"></td>
+                                    <td><button class="btn btn-block btn-primary"><i class="fa fa-rocket"></i> Publish</button></td>
                                     <td>
                                         <!---->
                                     </td>
