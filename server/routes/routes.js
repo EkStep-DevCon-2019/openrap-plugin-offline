@@ -29,4 +29,7 @@ module.exports = function(app, dirname) {
     app.post('/action/channel/v3/read/:channelId', contentService.readChannel);
     app.post('/action/framework/v3/read/:frameworkId', contentService.readFramework);
 
+    app.post('/app/telemetry', contentService.saveEditorTelemetry);
+    app.post('/action/data/v3/telemetry', contentService.savePlayerTelemetry);
+
 };

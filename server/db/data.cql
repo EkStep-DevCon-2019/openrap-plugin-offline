@@ -29,3 +29,9 @@ CREATE TABLE IF NOT EXISTS openrap_db.question_bank (
 	updateddate timestamp,
 	PRIMARY KEY (identifier)
 );
+
+CREATE TABLE IF NOT EXISTS openrap_db.telemetry (
+	mid text,
+	event text,
+	PRIMARY KEY (mid)
+);
