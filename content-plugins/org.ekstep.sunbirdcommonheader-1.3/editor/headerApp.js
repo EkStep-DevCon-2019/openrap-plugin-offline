@@ -79,8 +79,10 @@ angular.module('org.ekstep.sunbirdcommonheader:app', ["Scope.safeApply", "yaru22
     }
 
     $scope._sendReview = function() {
-        var subType = $scope.getContentType();
-        ecEditor.dispatchEvent('org.ekstep.editcontentmeta:showpopup', { action: 'review', subType: subType.toLowerCase(), framework: ecEditor.getContext('framework'), rootOrgId: ecEditor.getContext('channel'), type: 'content', popup: true ,editMode: $scope.getViewMode() })
+        ecEditor.dispatchEvent("org.ekstep.contenteditor:review", function(err, res) {
+            if (res) $scope.closeEditor();
+            $scope.$safeApply();
+        });
     };
 
     $scope.getViewMode = function(){
