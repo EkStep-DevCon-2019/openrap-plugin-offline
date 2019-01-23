@@ -128,7 +128,7 @@
 
                 <div ng-show="isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column">
-                        <table class="ui upForReviewTable table" ng-if="data.totalCount">
+                        <table class="ui upForReviewTable table">
                             <thead>
                                 <tr>
                                     <th class="six wide UpReviewTableHeader">Content </th>
@@ -164,13 +164,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="ten wide column" ng-if="!data.totalCount">
-                            <div class="ui two column centered grid no-result-container">
-                                <div class="column"><img src="./images/erroricon.png">
-                                    <div class="no-result-text">{{noResultMsg}}</div>
-                                <div class="no-result-search-text">no-results</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
