@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     <link rel="stylesheet" href="./styles/bootstrap.min.css">
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <script src="./libs/jquery.min.js"></script>
     <script src="./libs/bootstrap.min.js"></script>
     <link rel="stylesheet" href="bower_components/izimodal/css/iziModal.css">
@@ -17,9 +16,13 @@
     <script src="./libs/angular.min.js"></script>
     <link rel="stylesheet" href="./assets/styles.css">
     <link rel="stylesheet" href="./assets/inline.css">
-
-    <link rel="stylesheet" href="./styles/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-        crossorigin="anonymous">
+ 
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+   <style>
+       .textcontent .fa {font-size: 3.5em;margin: 0 .50rem 0 .50rem;
+        vertical-align: middle;}
+   </style> 
+  
 </head>
 
 <body>
@@ -84,7 +87,7 @@
     <div class="ui container" ng-app="workspaceApp" ng-controller="workspaceCtrl">
         <div class="ui stackable grid mt-30">
             <div class="three wide column pt-0">
-                <h4 class="workspaceicon ui header sectionHeading mt-20"><i class="fas fa-database"></i><span>
+                <h4 class="workspaceicon ui header sectionHeading mt-20"><i class="fa fa-database"></i><span>
                         My Workspace </span></h4>
                 <div class="publicmenusection ui secondary vertical menu tabs">
                     <a class="item" ng-click="setTab('tab-create')">
@@ -105,7 +108,7 @@
                     <div class="three wide column">
                         <div class="ui link card workspacecontent" tabindex="0" data-toggle="modal" data-target="#myModal">
                             <div class="content">
-                                <div class="textcontent"><i class="fas fa-file-alt "></i><span class="my-text"><a href="#" class="trigger">Resources</a></span></div>
+                                <div class="textcontent"><i class="fa fa-file-text"></i><span class="my-text"><a href="#" class="trigger">Resources</a></span></div>
                             </div>
                         </div>
                         <p class="workspaceinstuction">Create different resources like story, game, activity, audio, video, using the inbuilt authoring
@@ -115,7 +118,7 @@
                     <div class="three wide column">
                         <div class="ui link card workspacecontent" tabindex="0">
                             <div class="content">
-                                <div class="textcontent"><i class="fas fa-upload"></i><span class="my-text"><a href="#" class="trigger" onclick="$('#ContentEditorModal').iziModal('open')">Upload Content</a></span></div>
+                                <div class="textcontent"><i class="fa fa-upload"></i><span class="my-text"><a href="#" class="trigger" onclick="$('#ContentEditorModal').iziModal('open')">Upload Content</a></span></div>
                             </div>
                         </div>
                         <p class="workspaceinstuction">You can upload content here.</p>
@@ -339,32 +342,31 @@
     
         var app = angular.module('workspaceApp', []);
         app.controller('workspaceCtrl', function ($scope) {
-            var requestObj = {
-                      "request": {
-                        "filters": {
-                          "status": [ "Draft" ],
-                          "createdBy": userId
-                        }
-                      }
-                    };
-            $.ajax({
-                type: 'POST',
-                url: '/action/content/v3/search',
-                dataType: "json",
-                data: JSON.stringify(requestObj),
-                contentType: "application/json; charset=utf-8",
-                crossDomain: true,
-                success: function (data) {
-                    $scope.data = data.result.content;
-                    $scope.data.forEach(function(content, index) {
-                       if($scope.data[index].updateddate)
-                            $scope.data[index].updateddate = moment($scope.data[index].updateddate).fromNow();
-                    });
-                },
-                error: function (request, status, error) {
-                    alert(error);
-                }
-            });
+            $scope.search = function(requestObj){
+                console.log(requestObj);
+                $.ajax({
+                    type: 'POST',
+                    url: '/action/content/v3/search',
+                    dataType: "json",
+                    data: JSON.stringify(requestObj),
+                    contentType: "application/json; charset=utf-8",
+                    crossDomain: true,
+                    success: function (data) {
+                        console.log(data.result.content)
+                        var result = data.result.content;
+                        result.forEach(function(content, index) {
+                        if(result[index].updateddate)
+                                result[index].updateddate = moment(result[index].updateddate).fromNow();
+                        }); 
+                        $scope.data = result;  
+                        $scope.$safeApply(); 
+                    },
+                    error: function (request, status, error) {
+                        alert(error);
+                    }
+                });
+            }
+            
             $scope.initiazeEditor = function(contentId) {
                 context.contentId = contentId;
                 $("#ContentEditorModal").iziModal({
@@ -389,8 +391,41 @@
             }
             $scope.tab = 'tab-create';
             $scope.setTab = function (newTab) {
+                var requestObj = {
+                    "request": {
+                        "filters": {
+                        }
+                    }
+                };
+                switch(newTab) {
+                    case "tab-create":
+                        break;
+                    case "tab-allcontent":
+                        requestObj.request.filters.createdBy = userId;
+                        requestObj.request.filters.status = ["Draft"]
+                        $scope.search(requestObj);
+                        break;
+                    case "tab-review":
+                        requestObj.request.filters.createdBy = userId;
+                        requestObj.request.filters.status = ["Review"]
+                        $scope.search(requestObj);
+                        break;
+                    case "tab-published":
+                        requestObj.request.filters.createdBy = userId;
+                        requestObj.request.filters.status = ["Live"]
+                        $scope.search(requestObj);
+                        break;
+                    case "tab-upreview":
+                        delete requestObj.request.filters.createdBy;
+                        requestObj.request.filters.status = ["Review"]
+                        $scope.search(requestObj);
+                        break;
+                    default:
+                        // code block
+                }
                 $scope.tab = newTab;
             };
+            $scope.setTab($scope.tab);
             $scope.isSet = function (tabNum) {
                 return $scope.tab === tabNum;
             };
