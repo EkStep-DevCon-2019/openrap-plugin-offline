@@ -95,12 +95,13 @@
                         Review Submissions </a>
                     <a class="item" ng-click="setTab('tab-published')">
                         Published </a>
-                    <a class="item" ng-click="setTab('tab-upreview')">
+                    <a class="item" ng-click="setTab('tab-upreview')" id="upForReview" style="display: none">
                         Up For Review </a>
                 </div>
             </div>
             <div class="nine wide column workspacesegment">
                 <div id="ContentEditorModal"></div>
+                <div id="GenericEditorModal"></div>
                 <div ng-show="isSet('tab-create')" class="ui grid mt-5 tab_content tab-create" id="tab-create">
                     <div class="three wide column">
                         <div class="ui link card workspacecontent" tabindex="0" data-toggle="modal" data-target="#myModal">
@@ -115,7 +116,7 @@
                     <div class="three wide column">
                         <div class="ui link card workspacecontent" tabindex="0">
                             <div class="content">
-                                <div class="textcontent"><i class="fas fa-upload"></i><span class="my-text"><a href="#" class="trigger" onclick="$('#ContentEditorModal').iziModal('open')">Upload Content</a></span></div>
+                                <div class="textcontent"><i class="fas fa-upload"></i><span class="my-text"><a href="#" class="trigger" onclick="$('#GenericEditorModal').iziModal('open')">Upload Content</a></span></div>
                             </div>
                         </div>
                         <p class="workspaceinstuction">You can upload content here.</p>
@@ -291,6 +292,7 @@
         }
         var defaultConfig = {
             baseURL: '',
+            dispatcher: 'local',
             modalId: 'ContentEditorModal',
             plugins: [
                 { "id": "org.ekstep.sunbirdcommonheader", "ver": "1.3", "type": "plugin" },
@@ -330,14 +332,12 @@
                     overlay: false,
                     overlayColor: '',
                     history: false,
-                    onClosing: () => {
-                        this._zone.run(() => {
-                            this.closeModal();
-                        });
+                    onClosing: function(){
+                        $("#ContentEditorModal").iziModal('close');
                     }
                 });
             }
-    
+
         var app = angular.module('workspaceApp', []);
         app.controller('workspaceCtrl', function ($scope) {
             var requestObj = {
@@ -380,10 +380,8 @@
                     overlay: false,
                     overlayColor: '',
                     history: false,
-                    onClosing: () => {
-                        this._zone.run(() => {
-                            this.closeModal();
-                        });
+                    onClosing: function(){
+                        $("#ContentEditorModal").iziModal('close');
                     }
                 });
                 $('#ContentEditorModal').iziModal('open');
