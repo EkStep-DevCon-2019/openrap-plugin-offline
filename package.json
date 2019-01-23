@@ -10,9 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "request": "^2.88.0",
     "express-cassandra": "*",
-    "lodash": "*"
+    "lodash": "*",
+    "multer": "^1.4.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "express-http-proxy": "^1.5.1",

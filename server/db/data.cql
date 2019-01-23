@@ -11,6 +11,16 @@ CREATE TABLE IF NOT EXISTS openrap_db.content_index (
 	PRIMARY KEY (createdby, status, identifier)
 );
 
+CREATE TABLE IF NOT EXISTS openrap_db.asset_index (
+	identifier text,
+	mediatype text,
+	metadata text,
+	location text,
+	createdby text,
+	createddate timestamp,
+	PRIMARY KEY (createdby, mediatype, identifier)
+);
+
 CREATE TABLE IF NOT EXISTS openrap_db.question_bank (
 	identifier text,
 	objecttype text,
