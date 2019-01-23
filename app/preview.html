@@ -35,6 +35,9 @@
       padding: 0px;
       margin: 0px 0px 10px 0px;
       font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .product img {
@@ -57,11 +60,13 @@
     .pane {
       overflow: auto;
       display: flex;
-      max-height: calc(100vh - 80px);
-      min-height: 200px;
+      /*max-height: calc(100vh - 80px);
+      min-height: 200px;*/
       align-items: flex-start;
       justify-content: center;
       flex-wrap: wrap;
+      padding-bottm: 2.5em;
+      min-height: 200px;
     }
 
     .content-app-icon {
@@ -80,14 +85,10 @@
 
     .contentPreview {
       display: none;
-      height: 350px;
-      width: 562px;
-      margin-left: 28%;
-      margin: auto;
-      width: 50%;
-      border: 3px solid #196d7f;
-      padding: 10px;
-      margin-bottom: 10%;
+      height: 380px;
+      margin: 0 auto;
+      width: 55%;
+      position: relative;
     }
 
 
@@ -100,12 +101,11 @@
 
     .close {
       position: absolute;
-      right: 32px;
-      top: 32px;
+      right: -30px;
+      top: -30px;
       width: 32px;
       height: 32px;
       opacity: 0.3;
-      z-index: 9999;
     }
 
     .close:hover {
@@ -130,14 +130,6 @@
       transform: rotate(-45deg);
     }
 
-    #contentList {
-      height: 500px;
-      width: 562px;
-      margin-left: 28%;
-      margin: auto;
-      width: 50%;
-      padding: 10px;
-    }
   </style>
 
 </head>
@@ -201,9 +193,9 @@
   <!-- header content -->
 
   <!-- mid content -->
-  <div class="ui stackable grid mt-30">
+  <div class="ui stackable grid mt-10 mb-10 center aligned">
     <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl">
-      <h1 class="text-center">Player</h1>
+      <h1 class="text-center pb-30">Player</h1>
       <div class="pane" width=100% height=100%>
 
         <div class="product swiper-slide" ng-repeat="story in stories" ng-click="playContent(story.identifier);">
@@ -215,7 +207,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="contentPreview" id="contentPreview">
       <a href class="close" ng-click="closePlayer()"></a>
       <iframe id="previewContentIframe" width=100% height='100%'></iframe>
@@ -252,7 +244,7 @@
       var requestObj = {
         "request": {
           "filters": {
-            "status": ["Live"]
+            "status": ["Live", "Draft", "Review"]
           }
         }
       };
@@ -286,8 +278,22 @@
             console.log('data ', data);
             configuration = {};
             configuration.config = {
-              "repos": "/content-plugins",
-              "showEndpage": true
+              "plugins": [{
+                       "id": "org.sunbird.player.endpage",
+                       "ver": 1.1,
+                       "type": "plugin"
+                   }
+             ],
+             "splash": {
+                   "text": "",
+                   "icon": "",
+                   "bgImage": "assets/icons/splacebackground_1.png",
+                   "webLink": ""
+               },
+               "overlay": {
+                   "showUser": false
+               },
+               "showEndPage": false
             };
             configuration.context = {
               sid: "rctrs9r0748iidtuhh79ust993",
