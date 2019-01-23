@@ -195,7 +195,7 @@
   <!-- mid content -->
   <div class="ui stackable grid mt-10 mb-10 center aligned">
     <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl">
-      <h1 class="text-center pb-30">Player</h1>
+      <h1 class="text-center pb-30"> Library </h1>
       <div class="pane" width=100% height=100%>
 
         <div class="product swiper-slide" ng-repeat="story in stories" ng-click="playContent(story.identifier);">
@@ -244,7 +244,7 @@
       var requestObj = {
         "request": {
           "filters": {
-            "status": ["Live", "Draft", "Review"]
+            "status": ["Live"]
           }
         }
       };
