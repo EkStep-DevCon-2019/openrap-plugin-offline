@@ -26,4 +26,7 @@ module.exports = function(app, dirname) {
     app.post('/action/content/v3/review/:contentId', contentService.sendForReview);
     app.post('/action/content/v3/publish/:contentId', contentService.publish);
 
+    app.post('/action/channel/v3/read/:channelId', contentService.readChannel);
+    app.post('/action/framework/v3/read/:frameworkId', contentService.readFramework);
+
 };
