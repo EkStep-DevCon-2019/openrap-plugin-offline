@@ -127,7 +127,7 @@
                 </div>
 
                 <div ng-show="isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
-                    <div class="twelve wide column">
+                    <div class="twelve wide column" ng-if="data.length">
                         <table class="ui upForReviewTable table">
                             <thead>
                                 <tr>
@@ -165,11 +165,20 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="ten wide column" ng-if="!data.length">
+                            <div class="ui two column centered grid no-result-container">
+                                <div class="column">
+                                    <img src="./images/erroricon.png">
+                                    <div class="no-result-text">{{noResultMsg}}</div>
+                                    <div class="no-result-search-text">no-results</div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
 
                 <div ng-hide="isSet('tab-create') || isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column">
-                        <div class="ui stackable three column grid" ng-if="data.totalCount">
+                        <div class="ui stackable three column grid" ng-if="data.length">
                             <div class="column py-5 pl-10" ng-repeat="content in data">
                                 <div class="ui fluid card">
                                     <div class="image" style="height:200px">
@@ -181,14 +190,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ten wide column" ng-if="!data.totalCount">
+                        <div class="ten wide column" ng-if="!data.length">
                             <div class="ui two column centered grid no-result-container">
-                                <div class="column"><img src="./images/erroricon.png">
+                                <div class="column">
+                                    <img src="./images/erroricon.png">
                                     <div class="no-result-text">{{noResultMsg}}</div>
-                                <div class="no-result-search-text">no-results</div>
+                                    <div class="no-result-search-text">no-results</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -273,6 +283,7 @@
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/izimodal/js/iziModal.js" type="text/javascript"></script>
+    <script src="./libs/lodash.min.js"></script>
     <script type="text/javascript">
 
         var userNames = {"1": "Suren", "2": "Mohit", "3": "Kamesh"};
@@ -425,12 +436,12 @@
                         break;
                     case "tab-upreview":
                         $scope.noResultMsg = "You don't have any content for review...";
-                        delete requestObj.request.filters.createdBy;
+                        var userIds = _.keys(userNames);
+                        requestObj.request.filters.createdBy = _.without(userIds, userId);
                         requestObj.request.filters.status = ["Review"]
                         $scope.search(requestObj);
                         break;
                     default:
-                        // code block
                 }
                 $scope.tab = newTab;
             };
