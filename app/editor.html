@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <div ng-show="isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
+                <div ng-show="isSet('tab-allcontent') || isSet('tab-upreview')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column" ng-if="data.length">
                         <table class="ui upForReviewTable table">
                             <thead>
@@ -176,7 +176,7 @@
                         </div>
                 </div>
 
-                <div ng-hide="isSet('tab-create') || isSet('tab-allcontent')" class="ui grid mt-5 tab_content tab-allcontent">
+                <div ng-hide="isSet('tab-create') || isSet('tab-allcontent') || isSet('tab-upreview')" class="ui grid mt-5 tab_content tab-allcontent">
                     <div class="twelve wide column">
                         <div class="ui stackable three column grid" ng-if="data.length">
                             <div class="column py-5 pl-10" ng-repeat="content in data">
