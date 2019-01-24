@@ -129,7 +129,6 @@
     .close:after {
       transform: rotate(-45deg);
     }
-
   </style>
 
 </head>
@@ -194,11 +193,21 @@
 
   <!-- mid content -->
   <div class="ui stackable grid mt-10 mb-10 center aligned">
-    <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl">
-      <h1 class="text-center pb-30"> Library </h1>
+    <div id="contentList" ng-app="previwApp" ng-controller="previwCtrl" style="width:100%">
+      <div  class ="ui grid" style=" padding: 10px 40px;">
+        <h1 class="two wide column"> Library </h1>
+        <div class="seven wide column" ></div>
+
+        <div class="ui category search three wide column" style="text-align: right;">
+          <div class="ui icon input">
+            <input class="prompt" type="text" ng-model="contentSearch" placeholder="Search Lesson...">
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
       <div class="pane" width=100% height=100%>
 
-        <div class="product swiper-slide" ng-repeat="story in stories" ng-click="playContent(story.identifier);">
+        <div class="product swiper-slide" ng-repeat="story in stories | filter:contentSearch" ng-click="playContent(story.identifier);">
           <p class="product_name ng-binding">{{story.name}}</p>
           <div class="gc-contentlist-innerdiv">
             <img class="content-app-icon" src="./assets/default.png">
@@ -279,21 +288,21 @@
             configuration = {};
             configuration.config = {
               "plugins": [{
-                       "id": "org.sunbird.player.endpage",
-                       "ver": 1.1,
-                       "type": "plugin"
-                   }
-             ],
-             "splash": {
-                   "text": "",
-                   "icon": "",
-                   "bgImage": "assets/icons/splacebackground_1.png",
-                   "webLink": ""
-               },
-               "overlay": {
-                   "showUser": false
-               },
-               "showEndPage": false
+                "id": "org.sunbird.player.endpage",
+                "ver": 1.1,
+                "type": "plugin"
+              }
+              ],
+              "splash": {
+                "text": "",
+                "icon": "",
+                "bgImage": "assets/icons/splacebackground_1.png",
+                "webLink": ""
+              },
+              "overlay": {
+                "showUser": false
+              },
+              "showEndPage": false
             };
             configuration.context = {
               sid: "rctrs9r0748iidtuhh79ust993",
