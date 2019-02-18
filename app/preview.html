@@ -248,12 +248,22 @@
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.min.js"></script>
   <script type="text/javascript">
+    function getURLParam(param) {
+        var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < url.length; i++) {
+            var urlparam = url[i].split('=');
+            if (urlparam[0] == param) {
+                return urlparam[1];
+            }
+        }
+    }
+    var contentId = getURLParam('contentId');
     var app = angular.module('previwApp', []);
     app.controller('previwCtrl', function ($scope) {
       var requestObj = {
         "request": {
           "filters": {
-            "status": ["Live"]
+            "status": ["Draft", "Live"]
           }
         }
       };
@@ -284,6 +294,10 @@
           url: '/action/content/v3/read/' + contentId + '?mode=edit&fields=body',
           crossDomain: true,
           success: function (data) {
+            if(!data.result.content.body){
+              alert("Content does not having body, please add something on slide");
+              return;
+            }
             console.log('data ', data);
             configuration = {};
             configuration.config = {
@@ -323,6 +337,9 @@
             alert(error);
           }
         });
+      }
+      if(contentId){ 
+        $scope.playContent(contentId);
       }
     });
   </script>
